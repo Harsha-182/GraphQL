@@ -4,14 +4,14 @@ const _= require('lodash');
 const { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLInt, GraphQLSchema } = graphql;
 
 const book = [
-	{id: '1', name: 'Money-Heist', genre: 'Thriller'},
-	{id: '2', name: 'Breaking Bad', genre: 'Drama'},
-	{id: '3', name: 'Game of Thrones', genre: 'Fantasy'},
-	{id: '4', name: 'The Witcher', genre: 'Fantasy'},
-	{id: '5', name: 'The Office', genre: 'Comedy'},
-	{id: '6', name: 'Stranger Things', genre: 'Sci-Fi'},
-	{id: '7', name: 'The Crown', genre: 'Drama'},
-	{id: '8', name: 'The Mandalorian', genre: 'Sci-Fi'},
+	{id: '1', name: 'Money-Heist', genre: 'Thriller', authorId: '1'},
+	{id: '2', name: 'Breaking Bad', genre: 'Drama', authorId: '2'},
+	{id: '3', name: 'Game of Thrones', genre: 'Fantasy', authorId: '3'},
+	{id: '4', name: 'The Witcher', genre: 'Fantasy', authorId: '4'},
+	{id: '5', name: 'The Office', genre: 'Comedy', authorId: '5'},
+	{id: '6', name: 'Stranger Things', genre: 'Sci-Fi', authorId: '6'},
+	{id: '7', name: 'The Crown', genre: 'Drama', authorId: '7'},
+	{id: '8', name: 'The Mandalorian', genre: 'Sci-Fi', authorId: '8'},
 ]
 
 const author = [
@@ -31,6 +31,12 @@ const BookType = new GraphQLObjectType({
 		id: {type: GraphQLString},
 		name: {type: GraphQLString},
 		genre: {type: GraphQLString},
+		author: {
+			type: AuthorType,
+			resolve(parent, args){
+				return _.find(author, {id: parent.authorId})
+			}
+		}
 	})
 });
 
@@ -52,7 +58,7 @@ const RootQuery = new  GraphQLObjectType({
 			resolve(parent, args){
 				//code to get data from db /other source
 				return _.find(book, {id: args.id});
-			}
+			},
 		},
 		author: {
 			type: AuthorType,
