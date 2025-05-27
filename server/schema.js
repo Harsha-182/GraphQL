@@ -2,7 +2,7 @@ const graphql = require('graphql');
 const _= require('lodash');
 
 const { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLInt
-		, GraphQLSchema, GraphQLList } = graphql;
+		, GraphQLSchema, GraphQLList, GraphQLNonNull } = graphql;
 const Book = require('./models/Book');
 const Author = require('./models/Author');
 
@@ -15,7 +15,6 @@ const BookType = new GraphQLObjectType({
 		author: {
 			type: AuthorType,
 			resolve(parent, args){
-				console.log("parent from book======", parent)
 				return Author.findById(parent.authorId)
 			}
 		}
@@ -31,7 +30,6 @@ const AuthorType = new GraphQLObjectType({
 		book: {
 			type: new GraphQLList(BookType),
 			resolve(parent, args){
-				console.log("parent======", parent)
 				return Book.findById(parent.id)
 			}
 		}
@@ -92,8 +90,8 @@ const Mutation = new GraphQLObjectType({
 		addBook: {
 			type: BookType,
 			args: {
-				name: {type: GraphQLString},
-				genre: {type: GraphQLString},
+				name: {type: new GraphQLNonNull(GraphQLString)},
+				genre: {type: new GraphQLNonNull(GraphQLString)},
 				authorId: {type: GraphQLID}
 			},
 			resolve(parent, args){
