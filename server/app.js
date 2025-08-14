@@ -1,6 +1,7 @@
 const express = require('express');
 const {graphqlHTTP} = require('express-graphql');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
 const schema = require('./schema');
@@ -8,6 +9,8 @@ const Author = require('./models/Author');
 const Book = require('./models/Book');
 
 const uri = "mongodb+srv://harshacelestial:9ToCDEnZ6FhCJPui@cluster1.auosv0j.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1";
+
+app.use(cors());
 
 mongoose.connect(uri, {
 	useNewUrlParser: true,
